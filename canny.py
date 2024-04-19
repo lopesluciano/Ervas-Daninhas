@@ -45,16 +45,16 @@ for i in range(20):
         start_y = i * region_height
         end_y = (i + 1) * region_height
         
-        # Extract the region from the grayscale frame
+        # Extrair a regiao da imagem 
         region = mask[start_y:end_y, start_x:end_x]
         
-        # Apply Canny edge detection
+        # Usar o algoritmo Canny de deteccao de bordas
         edges = cv2.Canny(region, 100, 200)
         
-        # Count the number of edge pixels
+        # Contar o numero de pixels da borda
         edge_count = np.count_nonzero(edges)
         
-        # Determine if the region contains weeds based on edge frequency
+        # Determinar se a regiao contem ervas daninhas baseados na frequencia de bordas (a cultura possui folhas mais longas, por isso frequencia menor)
         if edge_count > edge_threshold:  # Adjust threshold as needed
             # Draw a white square over the region
             frame = cv2.rectangle(frame, (start_x, start_y), (end_x, end_y), (255, 255, 255), -1)
@@ -62,7 +62,7 @@ for i in range(20):
         
         total_region += 1
 
-# Display the result
+# Mostrar o Resultado
 cv2.imshow("Borda", borda)
 cv2.imshow("edge", edges)
 cv2.imshow("Result", frame)
