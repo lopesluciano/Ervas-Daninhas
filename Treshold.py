@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 
 # Carrega a imagem .png
-frame = cv2.imread('ErvasDaninhas.png')
+frame = cv2.imread('/home/luciano/Downloads/IMG_3441.JPG')
 frame = cv2.resize(frame, (500, 400)) # Ajustando as Dimensoes
 
 # Inicializa contador de objetos
