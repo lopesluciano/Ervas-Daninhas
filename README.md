@@ -5,3 +5,5 @@ Weed detection using computer vision algorithms.
 https://www.embrapa.br/busca-de-publicacoes/-/publicacao/1136521/monitoramento-de-plantas-daninhas-resistentes-a-glifosato-no-brasil
 
 https://manhnv103.github.io/weed-datasets/
+
+https://dataserv.ub.tum.de/index.php/s/m1717366
