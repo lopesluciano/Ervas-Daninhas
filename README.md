@@ -7,3 +7,5 @@ https://www.embrapa.br/busca-de-publicacoes/-/publicacao/1136521/monitoramento-d
 https://manhnv103.github.io/weed-datasets/
 
 https://dataserv.ub.tum.de/index.php/s/m1717366
+
+https://www.ipb.uni-bonn.de/data/sugarbeets2016/index.html
