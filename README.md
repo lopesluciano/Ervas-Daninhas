@@ -12,3 +12,4 @@ https://www.ipb.uni-bonn.de/data/sugarbeets2016/index.html
 
 https://drive.google.com/drive/u/1/folders/18FyOz7Y1OJvAYMSc44zzRfgukvtAu8FZ
 
+YoloV8 Training: https://www.youtube.com/watch?v=m9fH9OWn8YM
