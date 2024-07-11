@@ -28,17 +28,17 @@ _, threshold2 = cv2.threshold(gray_belt, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_
 contours, _ = cv2.findContours(threshold2, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
 # Criar uma mascara vazia para desenhar os contornos da cultura 
-corn_mask = np.zeros_like(threshold2)
+crop_mask = np.zeros_like(threshold2)
 
 # Filtrar os contornos por area e desenhar os com maior area (caso base milho)
-min_corn_area = 1500  # Valor de area minima (ajustavel)
+min_crop_area = 1500  # Valor de area minima (ajustavel)
 for contour in contours:
     area = cv2.contourArea(contour)
-    if area > min_corn_area:
-        cv2.drawContours(corn_mask, [contour], -1, (255), thickness=cv2.FILLED)
+    if area > min_crop_area:
+        cv2.drawContours(crop_mask, [contour], -1, (255), thickness=cv2.FILLED)
 
 # Inverter a mascara da cultura para conseguir as ervas daninhas
-weeds_mask = cv2.bitwise_not(corn_mask)
+weeds_mask = cv2.bitwise_not(crop_mask)
 
 # Aplicar a mascara das ervas daninhas na imagem binarizada
 weeds_only = cv2.bitwise_and(threshold2, threshold2, mask=weeds_mask)
@@ -54,6 +54,10 @@ for i in range(1, num_labels):  # Inicia em 1
 
 # Cria uma mascara separando as ervas daninhas na imagem original
 weeds_original_mask = cv2.bitwise_and(frame, frame, mask=clean_weeds_only)
+
+# Cria uma mascara separando a cultura na imagem original
+crop_original_mask = cv2.bitwise_and(frame, frame, mask=crop_mask)
+
 
 # Calcular os centroides das ervas daninhas
 centroids_list = []
@@ -71,8 +75,9 @@ for contour in contours:
 cv2.imshow("Frame", frame)
 cv2.imshow("Otsu", threshold2)
 cv2.imshow('Weeds Only', clean_weeds_only)
-cv2.imshow('Crop Only', corn_mask)
+cv2.imshow('Crop Only', crop_mask)
 cv2.imshow('Weeds in Original Frame', weeds_original_mask)
+cv2.imshow('Crops in Original Frame', crop_original_mask)
 
 print("Centroids of weeds:", centroids_list)
 
