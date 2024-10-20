@@ -3,25 +3,30 @@ import numpy as np
 
 # Carrega a imagem .png
 frame = cv2.imread('Imagens/Fig2UofAntioquiaArticle.png')
+
+    
 frame = cv2.resize(frame, (500, 400))  # Ajustando as Dimensoes
 
 
+## Separacao do verde da imagem ##  
 
-## Separacao do verde da imagem ##  -(estudar como fazer uma separacao dinamica)
-    
-# Converter quadro para HSV
-hsv_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+# Converter a imagem de BGR para HSV
+hsv_image = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
 
+# Definindo uma região de interesse (ROI) onde se sabe que é verde
+roi = hsv_image  # Ajuste os valores para a sua imagem
 
+# Calcular média e desvio padrão
+mean = cv2.mean(roi)  # mean retorna um tuple com 4 elementos (média e 0.0 para a quarta entrada)
+mean = np.array(mean[:3])  # Pega apenas os três primeiros valores (H, S, V)
+stddev = cv2.meanStdDev(roi)[1].flatten()  # Retorna um array 2D, então usamos flatten() para torná-lo 1D
 
-# Definir range de cor verde HSV
-#lower_green = np.array([35, 50, 80])
-#upper_green = np.array([85, 255, 255])
-lower_green = np.array([25, 50, 80])
-upper_green = np.array([85, 255, 255])
+# Definindo os limites com base na média e no desvio padrão
+lower_green = np.maximum(0, mean - stddev)
+upper_green = np.minimum([180, 255, 255], mean + stddev)  # 180 é o valor máximo para Hue
 
-# Criar uma mascara para os pixels verdes
-mask = cv2.inRange(hsv_frame, lower_green, upper_green)
+# Criar uma máscara para a cor verde
+mask = cv2.inRange(hsv_image, lower_green.astype(int), upper_green.astype(int))
 
 # Aplicar a mascara na imagem original 
 res = cv2.bitwise_and(frame, frame, mask=mask)
@@ -32,12 +37,13 @@ gray_belt = cv2.cvtColor(res, cv2.COLOR_BGR2GRAY)
 cv2.imshow("gray_belt", gray_belt)
 
 
+
 ## Filtro Medio ##
 #plant_image_filtered = cv2.medianBlur(gray_belt, 3)
 #cv2.imshow("plant_plant_image_filtered", plant_image_filtered)
 
 
-## Segementacao da Imagem ## - (me parece que muita informacao esta sendo perdida na segmentacao, folhas se juntando com outras)
+## Segementacao da Imagem ##
 
 
 # Metodo de Otsu para binarizacao
@@ -106,3 +112,4 @@ print("Centroids of weeds:", centroids_list)
 
 cv2.waitKey(0)
 cv2.destroyAllWindows()
+
