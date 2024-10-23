@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 
 # Carrega a imagem .png
-frame = cv2.imread('Imagens/Fig2UofAntioquiaArticle.png')
+frame = cv2.imread('Screenshot from 2024-10-22 09-26-47.png')
 frame = cv2.resize(frame, (500, 400))  # Ajustando as Dimensoes
 
 
@@ -18,7 +18,7 @@ hsv_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
 #lower_green = np.array([35, 50, 80])
 #upper_green = np.array([85, 255, 255])
 lower_green = np.array([25, 50, 80])
-upper_green = np.array([85, 255, 255])
+upper_green = np.array([98, 255, 255])
 
 # Criar uma mascara para os pixels verdes
 mask = cv2.inRange(hsv_frame, lower_green, upper_green)
@@ -52,7 +52,7 @@ contours, _ = cv2.findContours(threshold2, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_S
 
 # Criar uma mascara vazia para desenhar os contornos da cultura 
 crop_mask = np.zeros_like(threshold2)
-cv2.imshow('Crop Only', crop_mask)
+
 
 # Filtrar os contornos por area e desenhar os com maior area (caso base milho)
 min_crop_area = 1500  # Valor de area minima (ajustavel)
@@ -62,6 +62,7 @@ for contour in contours:
         cv2.drawContours(crop_mask, [contour], -1, (255), thickness=cv2.FILLED)
 
 # Inverter a mascara da cultura para conseguir as ervas daninhas
+#cv2.imshow('Crop Only', crop_mask)
 weeds_mask = cv2.bitwise_not(crop_mask)
 
 # Aplicar a mascara das ervas daninhas na imagem binarizada
@@ -71,7 +72,7 @@ weeds_only = cv2.bitwise_and(threshold2, threshold2, mask=weeds_mask)
 num_labels, labels, stats, centroids = cv2.connectedComponentsWithStats(weeds_only, connectivity=8)
 min_size = 10  # Tamanho minimo para erva daninha
 clean_weeds_only = np.zeros_like(weeds_only)
-cv2.imshow('Weeds Only', clean_weeds_only)
+#cv2.imshow('Weeds Only', clean_weeds_only)
 
 for i in range(1, num_labels):  # Inicia em 1
     if stats[i, cv2.CC_STAT_AREA] >= min_size:
